@@ -32,13 +32,13 @@ const registerUser = async (req, res = response) => {
     // guardamos los datos del usuario
     await user.save();
     // generamos el token del usuario
-    const token = await generateToken(user.uid, user.names);
+    const token = await generateToken(user._id, user.names);
 
     // si no hay ningun problema en la validacion entonces le damos el mensaje de confirmacion al cliente
     res.status(201).json({
       ok: true,
       message: "Usuario creado con exito",
-      uid: user.uid,
+      uid: user._id,
       names: user.names,
       surnames: user.surnames,
       token,
@@ -80,12 +80,12 @@ const loginUser = async (req, res = response) => {
     }
 
     // generar el json web token
-    const token = await generateToken(user.uid, user.names);
+    const token = await generateToken(user._id, user.names);
 
     res.status(200).json({
       ok: true,
       message: "Usuario logueado con exito",
-      uid: user.uid,
+      uid: user._id,
       names: user.names,
       surnames: user.surnames,
       token,

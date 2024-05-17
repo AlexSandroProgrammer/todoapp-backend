@@ -15,6 +15,7 @@ const {
   createCar,
   updateCar,
   deleteCar,
+  getCarId,
 } = require("../controllers/car");
 // almacenamos las diferentes herramientas de router
 // en una variable
@@ -22,10 +23,13 @@ const router = Router();
 
 // toda ruta debe pasar por la autenticacion del token
 
-router.use(jwtValidation);
+// router.use(jwtValidation);
 // * car router get
 
 router.get("/", getCars);
+
+// llamado de datos a un registro por id
+router.get("/:id", getCarId);
 
 // * create car method post
 

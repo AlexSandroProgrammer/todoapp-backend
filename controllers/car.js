@@ -39,6 +39,35 @@ const getCars = async (req, res = response) => {
   });
 };
 
+// controlador del listado de los carro seleccionado
+
+const getCarId = async (req, res = response) => {
+  const { id } = req.params;
+
+  try {
+    const car = await Car.findById(id);
+    if (!car) {
+      return res.status(404).json({
+        ok: false,
+        message: "El id del carro enviado no fue encontrado",
+      });
+    }
+
+    return res.status(200).json({
+      ok: true,
+      message: "Carro encontrado",
+      car,
+    });
+  } catch (error) {
+    console.log(
+      `El error que estas presentando es el siguiente: ${error.message}`
+    );
+    res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
 // controlador del listado de los carros registrados en nuestra base de datos
 const updateCar = async (req, res = response) => {
   const carId = req.params.id;
@@ -83,6 +112,27 @@ const updateCar = async (req, res = response) => {
 
 // controlador del listado de los carros registrados en nuestra base de datos
 const deleteCar = async (req, res = response) => {
+  const carId = await req.params.id;
+  try {
+    const carIdValidation = await Car.findById(carId);
+    if (!carIdValidation) {
+      return res.status(404).json({
+        ok: false,
+        message: "el carro no existe",
+      });
+    }
+    await Car.findByIdAndDelete(carId);
+    res.status(200).json({
+      ok: true,
+      message: "eliminacion de carro exitosa",
+    });
+  } catch (error) {
+    console.log(`Error al momento de eliminar el carro ${error.message}`);
+    res.status(500).json({
+      message:
+        "Error al momento de eliminar el carro, comunicate con el administrador",
+    });
+  }
   res.json({
     message: "eliminacion de carro",
   });
@@ -95,4 +145,5 @@ module.exports = {
   createCar,
   updateCar,
   deleteCar,
+  getCarId,
 };

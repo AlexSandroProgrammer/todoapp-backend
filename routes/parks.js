@@ -20,7 +20,7 @@ const {
 // en una variable
 const router = Router();
 
-router.use(jwtValidation);
+// router.use(jwtValidation);
 // * select park router get
 router.get("/:id", getParkId);
 
